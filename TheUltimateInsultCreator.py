@@ -7,13 +7,49 @@
 # # # # # # # # # # # # # # # # # # # # #
 
 
-import console, sound, random, scene, ui, speech, webbrowser, string
+import console, sound, random, scene, ui, speech, webbrowser, string, os, sys
+from urllib import urlopen
 from scene import *
+from PIL import Image
 
 
 console.clear()
 console.set_color(0.2, 0.2, 0.2)
 console.set_font('Helvetica', 14)
+
+
+folderPath = 'ImageFiles/Imported/'
+imgPath='Insults'
+urlPath='http://i.imgur.com/q4UXODX.png'
+
+def ldImg(imgPath,folderPath='Images',urlPath='Null'):
+	try:
+		if folderPath: folderPath+="/"
+		if not os.path.exists(folderPath[:-1]): os.mkdir(folderPath[:-1])
+		url = urlopen(urlPath)
+		with open(folderPath+imgPath+'.png', "wb") as output:
+			output.write(url.read())
+		return os.getcwd()+'/'+folderPath+imgPath
+	except:
+		console.set_color(1,0,0)
+		print '\nERROR: Download failed.'
+		sys.exit()
+ 
+def testPix(ik):
+	print ik
+	
+if not os.path.exists(os.getcwdu()+'/'+folderPath+imgPath+'.png'):
+	print '\nDownloading...'
+	try:
+		lddImg = ldImg(imgPath,folderPath,urlPath)
+		
+		Image.open(lddImg+'.png').show()
+		print folderPath+imgPath+".png has been downloaded.\n"
+		testPix(open(lddImg+'.png'))
+		console.clear()
+	except:
+		print "\nERROR: Download failed."
+		sys.exit()
 
 
 class InsultGenerator (Scene):
